@@ -1,0 +1,40 @@
+
+server:
+  port: 8080
+
+
+# for database
+spring:
+  application:
+    name:expense-tracker
+  datasource:
+    driverClassName: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  profiles:
+    active: dev
+
+info:
+  app:
+    name: Expense-tracker
+    description: for tracking expenses
+    version: 1.0
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,beans,metrics
+  info:
+    env:
+      enabled: true
+
+#/+  profiles:
+#    active: dev
+#
+#    url: jdbc:postgresql://localhost:5432/Expense-Tracker
+#    username: postgres
+#    password: 5432

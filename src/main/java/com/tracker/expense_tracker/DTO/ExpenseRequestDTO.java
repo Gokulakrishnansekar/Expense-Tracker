@@ -1,4 +1,4 @@
-package com.tracker.expense_tracker.model;
+package com.tracker.expense_tracker.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,15 +7,21 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 
+
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class Expense {
-    private Long id;
+@AllArgsConstructor
+public class ExpenseRequestDTO {
+
     private String title;
-    private double amount;
+
+    private Double amount;
+
     private LocalDate date;
+
     private String category;
-    private String user;
+
+    private String userName;
+
 }

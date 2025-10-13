@@ -1,7 +1,10 @@
 package com.tracker.expense_tracker.controller;
 
-import com.tracker.expense_tracker.model.Expense;
+import com.tracker.expense_tracker.DTO.ExpenseRequestDTO;
+import com.tracker.expense_tracker.DTO.ExpenseResponseDTO;
+import com.tracker.expense_tracker.Entity.Expense;
 import com.tracker.expense_tracker.service.ExpenseService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,17 +18,29 @@ public class ExpensesController {
 
 
     @GetMapping("/expenses")
-    public List<Expense> getExpenses(){
+    public List<ExpenseResponseDTO> getExpenses(){
         return expenseService.getAllExpense();
     }
     @GetMapping("/expenses/{id}")
-    public Expense getExpensesById(@PathVariable Long id){
-        return expenseService.getExpenseById(id);
+    public ExpenseResponseDTO getExpensesById(@PathVariable Long id){
+
+            return expenseService.getExpenseById(id);
+
+
+
     }
     @PostMapping("/expenses")
-    public Expense getExpenses(@RequestBody Expense e){
+    public ExpenseResponseDTO getExpenses(@Valid @RequestBody ExpenseRequestDTO e){
         return expenseService.addExpense(e);
     }
+
+    @PutMapping("/expenses/{id}")
+    public ExpenseResponseDTO getExpenses(@Valid @RequestBody ExpenseRequestDTO e,@PathVariable Long id){
+
+
+        return expenseService.updateExpense(e,id);
+    }
+
 
 }
 
