@@ -1,5 +1,6 @@
 package com.tracker.expense_tracker.Entity;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -50,4 +51,7 @@ public class Expense {
     @Column(name="created_date")
     @CurrentTimestamp()
     private String createDate;
+
+
+
 }

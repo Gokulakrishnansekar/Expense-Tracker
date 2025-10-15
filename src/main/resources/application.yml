@@ -2,20 +2,23 @@
 server:
   port: 8080
 
-
+profile: local
 # for database
 spring:
   application:
     name:expense-tracker
   datasource:
     driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/Expense-Tracker
+    username: postgres
+    password: postgres
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
     show-sql: true
     hibernate:
       ddl-auto: update
-  profiles:
-    active: dev
+#  profiles:
+#    active: dev
+# or else we can use CLI:-DSpring.profiles.active=dev or prod
 
 info:
   app:

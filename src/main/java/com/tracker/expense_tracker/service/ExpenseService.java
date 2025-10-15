@@ -5,6 +5,9 @@ import com.tracker.expense_tracker.DTO.ExpenseResponseDTO;
 import com.tracker.expense_tracker.exception_handling.UserNotFoundException;
 import com.tracker.expense_tracker.Entity.Expense;
 import com.tracker.expense_tracker.repository.ExpensesRepository;
+import jakarta.annotation.PostConstruct;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,6 +15,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class ExpenseService {
+
 
 //    Expense e1=new Expense(1L,"name",100, LocalDate.now(),"furniture","gokul");
 //    Expense e2=new Expense(2L,"two",200, LocalDate.now(),"toys","abi");
@@ -65,8 +69,15 @@ public class ExpenseService {
 
 
 
-    public List<ExpenseResponseDTO> getAllExpense(){
-        return this.convertToExpensesDTO(expensesRepository.findAll());
+    public Page<ExpenseResponseDTO> getAllExpense(Pageable p){
+        Page<Expense> data=expensesRepository.findAll(p);
+       return data.map(this::convertToExpenseDTO);
+
+
+
+
+
+
     }
 
     public ExpenseResponseDTO getExpenseById(Long l)

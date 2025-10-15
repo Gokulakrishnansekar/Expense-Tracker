@@ -1,5 +1,6 @@
 package com.tracker.expense_tracker.DTO;
 
+import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,5 +24,6 @@ public class ExpenseRequestDTO {
     private String category;
 
     private String userName;
+
 
 }
