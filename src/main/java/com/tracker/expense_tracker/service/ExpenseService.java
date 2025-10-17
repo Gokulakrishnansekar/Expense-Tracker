@@ -2,16 +2,21 @@ package com.tracker.expense_tracker.service;
 
 import com.tracker.expense_tracker.DTO.ExpenseRequestDTO;
 import com.tracker.expense_tracker.DTO.ExpenseResponseDTO;
+import com.tracker.expense_tracker.DTO.PageView;
 import com.tracker.expense_tracker.exception_handling.UserNotFoundException;
 import com.tracker.expense_tracker.Entity.Expense;
+import com.tracker.expense_tracker.model.AmountByCategory;
 import com.tracker.expense_tracker.repository.ExpensesRepository;
-import jakarta.annotation.PostConstruct;
+import com.tracker.expense_tracker.specification.ExpenseSpecification;
+import com.tracker.expense_tracker.specification.ExpenseSpecificationFilter;
+import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ExpenseService {
@@ -27,6 +32,16 @@ public class ExpenseService {
 //        expenseRepo.put(1L,e1);
 //        expenseRepo.put(2L,e2);
       //  expensesRepository
+    }
+
+    public PageView<ExpenseResponseDTO> convertPageDateToPageObject(Page<Expense> data){
+            PageView<ExpenseResponseDTO> pv=new PageView<>();
+            pv.setItems(data.getContent().stream().map(this::convertToExpenseDTO).toList());
+            pv.setSize(data.getSize());
+            pv.setHasNextPage(data.hasNext());
+            pv.setTotalElements(data.getTotalElements());
+        pv.setCurrentPageElements(data.getNumberOfElements());
+           return pv;
     }
 
     public List<ExpenseResponseDTO> convertToExpensesDTO(List<Expense> ex)
@@ -69,12 +84,10 @@ public class ExpenseService {
 
 
 
-    public Page<ExpenseResponseDTO> getAllExpense(Pageable p){
-        Page<Expense> data=expensesRepository.findAll(p);
-       return data.map(this::convertToExpenseDTO);
-
-
-
+    public PageView<ExpenseResponseDTO> getAllExpense(ExpenseSpecificationFilter expenseSpecificationFilter, Pageable p){
+        Specification<Expense> spe=ExpenseSpecification.filterBy(expenseSpecificationFilter);
+        Page<Expense> data=expensesRepository.findAll(spe,p);
+       return  this.convertPageDateToPageObject(data);
 
 
 
@@ -110,6 +123,10 @@ public class ExpenseService {
 
 
 
+    }
+
+    public List<AmountByCategory> getAmountByCategory(String userName, LocalDate startDate,LocalDate endDate){
+        return expensesRepository.getAmountByCategory(userName,startDate,endDate);
     }
 
 
