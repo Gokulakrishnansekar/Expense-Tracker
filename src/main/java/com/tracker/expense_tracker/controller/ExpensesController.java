@@ -10,6 +10,8 @@ import com.tracker.expense_tracker.specification.ExpenseSpecificationFilter;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,7 +32,7 @@ public class ExpensesController {
         this.expenseService=expenseService;
     }
 
-
+    //@Cacheable("expensesCache")-->if key is not needed
     @GetMapping("/expenses")
     @Operation(summary = "get Expenses",description = "Getting all Expenses")
     public PageView<ExpenseResponseDTO> getExpenses(
@@ -53,6 +55,8 @@ public class ExpensesController {
         return expenseService.getAllExpense(expenseSpecificationFilter,p);
     }
 
+
+    @Cacheable(value = "expense" ,key = "#id")
     @GetMapping("/expenses/{id}")
     public ExpenseResponseDTO getExpensesById(@PathVariable Long id){
             return expenseService.getExpenseById(id);
@@ -62,6 +66,7 @@ public class ExpensesController {
         return expenseService.addExpense(e);
     }
 
+    @CachePut(key = "#id",value = "expense")
     @PutMapping("/expenses/{id}")
     public ExpenseResponseDTO getExpenses(@Valid @RequestBody ExpenseRequestDTO e,@PathVariable Long id){
 
